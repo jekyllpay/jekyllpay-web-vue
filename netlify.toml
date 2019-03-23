@@ -1,0 +1,5 @@
+[[redirects]]
+from = "http://superphp-vue.netlify.com/*"
+to = "http://vue.superphp.org/:splat"
+status = 301
+force = true
