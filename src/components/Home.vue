@@ -25,7 +25,12 @@
             </v-flex>
             <v-flex xs12 sm6 hide-details>
               <!-- <v-text-field v-model="payment.currency" label="Currency"></v-text-field> -->
-              <v-autocomplete label="Currency" v-model="payment.currency" :items="currencyList"></v-autocomplete>
+              <v-autocomplete
+                label="Currency"
+                v-model="payment.currency"
+                :items="currencyList"
+                :filter="matchStartingChars"
+              ></v-autocomplete>
             </v-flex>
           </v-layout>
         </v-flex>
@@ -35,8 +40,11 @@
             label="Comments"
             v-model="payment.comments"
             placeholder="Make some comments here"
+            rows="3"
           ></v-textarea>
         </v-flex>
+
+        <logo-grid></logo-grid>
       </v-flex>
       <v-spacer></v-spacer>
     </v-layout>
@@ -44,8 +52,12 @@
 </template>
 
 <script>
+import LogoGrid from "@/components/common/LogoGrid";
 export default {
   name: "Home",
+  components: {
+    LogoGrid
+  },
   data: () => ({
     currencyList: ["USD"],
     payment: {
@@ -62,6 +74,9 @@ export default {
   methods: {
     goToRoute(routeName) {
       this.$router.push({ name: routeName });
+    },
+    matchStartingChars(item, queryText, itemText) {
+      console.log(item, queryText, itemText);
     }
   }
 };
