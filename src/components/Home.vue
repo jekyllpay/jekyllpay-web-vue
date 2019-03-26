@@ -41,6 +41,7 @@
             v-model="payment.comments"
             placeholder="Make some comments here"
             rows="3"
+            hide-details
           ></v-textarea>
         </v-flex>
 
