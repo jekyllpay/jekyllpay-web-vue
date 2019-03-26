@@ -1,5 +1,5 @@
 [[redirects]]
-from = "http://superphp-vue.netlify.com/*"
-to = "http://vue.superphp.org/:splat"
+from = "http://jekylltechnologies.netlify.com/*"
+to = "http://pay.jekylltechnologies.com/:splat"
 status = 301
 force = true

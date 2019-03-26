@@ -1,5 +1,5 @@
 <template>
-  <v-footer height="auto" color="primary lighten-1" app inset>
+  <v-footer color="blue lighten-3" app inset>
     <v-layout row wrap>
       <v-flex xs12 sm6>
         <v-layout :justify-center="$vuetify.breakpoint.name == 'xs'">

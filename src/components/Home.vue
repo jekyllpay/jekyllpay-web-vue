@@ -1,34 +1,44 @@
 <template>
-  <v-container fluid fill-height>
-    <v-layout align-center justify-center>
-      <v-flex xs12>
-        <v-card dark color="primary">
-          <v-card-text class="px-0">justify-space-between</v-card-text>
-        </v-card>
+  <v-container fluid grid-list-md>
+    <v-layout row wrap>
+      <v-spacer></v-spacer>
+      <v-flex xs12 sm8>
+        <v-flex xs12>
+          <v-btn block color="blue lighten-3" class="text-capitalize">Payment Page</v-btn>
+        </v-flex>
+
+        <v-flex xs12 sm12>
+          <v-layout row wrap>
+            <v-flex xs12 sm6>
+              <v-text-field v-model="payment.first_name" label="First Name"></v-text-field>
+            </v-flex>
+            <v-flex xs12 sm6>
+              <v-text-field v-model="payment.last_name" label="Last Name"></v-text-field>
+            </v-flex>
+          </v-layout>
+        </v-flex>
+
+        <v-flex xs12 sm12>
+          <v-layout row wrap>
+            <v-flex xs12 sm6>
+              <v-text-field v-model="payment.amount" label="Amount"></v-text-field>
+            </v-flex>
+            <v-flex xs12 sm6 hide-details>
+              <!-- <v-text-field v-model="payment.currency" label="Currency"></v-text-field> -->
+              <v-autocomplete label="Currency" v-model="payment.currency" :items="currencyList"></v-autocomplete>
+            </v-flex>
+          </v-layout>
+        </v-flex>
+
+        <v-flex xs12 sm12>
+          <v-textarea
+            label="Comments"
+            v-model="payment.comments"
+            placeholder="Make some comments here"
+          ></v-textarea>
+        </v-flex>
       </v-flex>
-      <v-flex xs12 sm8 md4>
-        <v-card class="elevation-12">
-          <v-toolbar dark color="primary">
-            <v-toolbar-title>Payment Page</v-toolbar-title>
-          </v-toolbar>
-          <v-card-text>
-            <v-form>
-              <v-text-field prepend-icon="person" name="login" label="Login" type="text"></v-text-field>
-              <v-text-field
-                prepend-icon="lock"
-                name="password"
-                label="Password"
-                id="password"
-                type="password"
-              ></v-text-field>
-            </v-form>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="primary">Submit Payment</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-flex>
+      <v-spacer></v-spacer>
     </v-layout>
   </v-container>
 </template>
@@ -36,7 +46,19 @@
 <script>
 export default {
   name: "Home",
-  data: () => ({}),
+  data: () => ({
+    currencyList: ["USD"],
+    payment: {
+      first_name: null,
+      last_name: null,
+      amount: 0,
+      currency: "USD",
+      stdUnit: "dollar",
+      minUnit: "cent",
+      comments: null,
+      paymethod: null
+    }
+  }),
   methods: {
     goToRoute(routeName) {
       this.$router.push({ name: routeName });
