@@ -1,7 +1,7 @@
 <template>
   <v-container fluid grid-list-md>
     <v-layout row wrap>
-      <v-flex xs12 sm8 offset-sm2>
+      <v-flex xs12 sm6 offset-sm3>
         <v-flex xs12 sm12>
           <v-btn block color="blue lighten-3" class="text-capitalize">Checkout Page</v-btn>
         </v-flex>
@@ -20,7 +20,7 @@
         <v-flex xs12 sm12>
           <v-layout row wrap>
             <v-flex xs6 sm3>
-              <v-text-field v-model="payment.amount" label="Amount"></v-text-field>
+              <v-text-field v-model="payment.amount" label="Amount" type="number"></v-text-field>
             </v-flex>
             <v-flex xs6 sm3 hide-details>
               <v-autocomplete
@@ -31,11 +31,7 @@
               ></v-autocomplete>
             </v-flex>
             <v-flex xs12 sm6>
-              <v-text-field
-                :value="payment.order_id"
-                label="Order ID, Read Only. If you don't have it, that's fine."
-                readonly
-              ></v-text-field>
+              <v-text-field :value="payment.order_id" label="Order ID, Read Only." readonly></v-text-field>
             </v-flex>
           </v-layout>
         </v-flex>
@@ -51,6 +47,16 @@
         </v-flex>
 
         <logo-grid></logo-grid>
+        <v-flex xs12 sm12>
+          <v-layout row justify-center>
+            <v-flex xs6 sm3 class="text-xs-right">
+              <v-btn color="primary" class="text-capitalize">Review</v-btn>
+            </v-flex>
+            <v-flex xs6 sm3>
+              <v-btn color="primary" class="text-capitalize">Submit</v-btn>
+            </v-flex>
+          </v-layout>
+        </v-flex>
       </v-flex>
     </v-layout>
   </v-container>
@@ -66,6 +72,16 @@ export default {
   },
   mounted() {
     this.payment.order_id = this.currentOrderId || this.$route.query.orderid;
+  },
+  watch: {
+    payment: {
+      handler: function(val) {
+        this.updatePayment({
+          currentPayment: val
+        });
+      },
+      deep: true
+    }
   },
   computed: {
     ...mapGetters("orderid", {
@@ -89,6 +105,9 @@ export default {
   methods: {
     ...mapActions("orderid", {
       updateOrderId: "updateOrderId"
+    }),
+    ...mapActions("payment", {
+      updatePayment: "updatePayment"
     }),
     goToRoute(routeName) {
       this.$router.push({ name: routeName });
