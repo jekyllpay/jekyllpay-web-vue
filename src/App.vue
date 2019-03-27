@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <v-toolbar app fixed>
-      <v-btn fab right light>
+    <v-toolbar app fixed dense>
+      <v-btn fab right light small>
         <v-avatar size="32px" tile>
           <img src="@/assets/logo.png" alt="Vuetify">
         </v-avatar>
@@ -14,17 +14,17 @@
         <v-icon>fas fa-bell</v-icon>
       </v-btn>
       <v-speed-dial left direction="bottom" open-on-hover transition="slide-y-reverse-transition">
-        <v-btn slot="activator" color="blue darken-2" dark fab>
+        <v-btn slot="activator" color="blue darken-2" dark fab small>
           <v-icon>account_circle</v-icon>
           <v-icon>close</v-icon>
         </v-btn>
-        <v-btn fab dark color="green">
+        <v-btn fab dark color="green" small>
           <v-icon>edit</v-icon>
         </v-btn>
-        <v-btn fab dark color="indigo">
+        <v-btn fab dark color="indigo" small>
           <v-icon>add</v-icon>
         </v-btn>
-        <v-btn fab dark color="red">
+        <v-btn fab dark color="red" small>
           <v-icon>delete</v-icon>
         </v-btn>
       </v-speed-dial>
