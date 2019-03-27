@@ -49,11 +49,14 @@
         <logo-grid></logo-grid>
         <v-flex xs12 sm12>
           <v-layout row justify-center>
-            <v-flex xs6 sm3 class="text-xs-right">
+            <!-- <v-flex xs6 sm3 class="text-xs-right">
               <v-btn color="primary" class="text-capitalize">Review</v-btn>
             </v-flex>
             <v-flex xs6 sm3>
               <v-btn color="primary" class="text-capitalize">Submit</v-btn>
+            </v-flex>-->
+            <v-flex xs6 sm4 class="text-xs-center">
+              <v-btn color="primary" class="text-capitalize" @click="goToRoute('Review')">Review</v-btn>
             </v-flex>
           </v-layout>
         </v-flex>
