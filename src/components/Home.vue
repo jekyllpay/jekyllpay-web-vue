@@ -1,10 +1,9 @@
 <template>
   <v-container fluid grid-list-md>
     <v-layout row wrap>
-      <v-spacer></v-spacer>
-      <v-flex xs12 sm8>
-        <v-flex xs12>
-          <v-btn block color="blue lighten-3" class="text-capitalize">Payment Page</v-btn>
+      <v-flex xs12 sm8 offset-sm2>
+        <v-flex xs12 sm12>
+          <v-btn block color="blue lighten-3" class="text-capitalize">Checkout Page</v-btn>
         </v-flex>
 
         <v-flex xs12 sm12>
@@ -20,17 +19,23 @@
 
         <v-flex xs12 sm12>
           <v-layout row wrap>
-            <v-flex xs12 sm6>
+            <v-flex xs6 sm3>
               <v-text-field v-model="payment.amount" label="Amount"></v-text-field>
             </v-flex>
-            <v-flex xs12 sm6 hide-details>
-              <!-- <v-text-field v-model="payment.currency" label="Currency"></v-text-field> -->
+            <v-flex xs6 sm3 hide-details>
               <v-autocomplete
                 label="Currency"
                 v-model="payment.currency"
                 :items="currencyList"
                 :filter="matchStartingChars"
               ></v-autocomplete>
+            </v-flex>
+            <v-flex xs12 sm6>
+              <v-text-field
+                :value="payment.order_id"
+                label="Order ID, Read Only. If you don't have it, that's fine."
+                readonly
+              ></v-text-field>
             </v-flex>
           </v-layout>
         </v-flex>
@@ -47,32 +52,44 @@
 
         <logo-grid></logo-grid>
       </v-flex>
-      <v-spacer></v-spacer>
     </v-layout>
   </v-container>
 </template>
 
 <script>
 import LogoGrid from "@/components/common/LogoGrid";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Home",
   components: {
     LogoGrid
   },
+  mounted() {
+    this.payment.order_id = this.currentOrderId || this.$route.query.orderid;
+  },
+  computed: {
+    ...mapGetters("orderid", {
+      currentOrderId: "getOrderId"
+    })
+  },
   data: () => ({
     currencyList: ["USD"],
     payment: {
+      order_id: null,
       first_name: null,
       last_name: null,
-      amount: 0,
+      amount: null,
       currency: "USD",
-      stdUnit: "dollar",
-      minUnit: "cent",
+      std_unit: "dollar",
+      min_unit: "cent",
       comments: null,
-      paymethod: null
+      pay_method: null
     }
   }),
   methods: {
+    ...mapActions("orderid", {
+      updateOrderId: "updateOrderId"
+    }),
     goToRoute(routeName) {
       this.$router.push({ name: routeName });
     },
