@@ -74,7 +74,7 @@ export default {
     LogoGrid
   },
   mounted() {
-    this.payment.order_id = this.currentOrderId || this.$route.query.orderid;
+    this.payment = Object.assign(this.payment, this.$route.query);
   },
   watch: {
     payment: {
