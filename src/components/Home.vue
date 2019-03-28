@@ -19,6 +19,9 @@
 
         <v-flex xs12 sm12>
           <v-layout row wrap>
+            <v-flex xs12 sm6>
+              <v-text-field v-model="payment.email" label="Email"></v-text-field>
+            </v-flex>
             <v-flex xs6 sm3>
               <v-text-field v-model="payment.amount" label="Amount" type="number"></v-text-field>
             </v-flex>
@@ -30,8 +33,16 @@
                 :filter="matchStartingChars"
               ></v-autocomplete>
             </v-flex>
+          </v-layout>
+        </v-flex>
+
+        <v-flex xs12 sm12>
+          <v-layout row wrap>
             <v-flex xs12 sm6>
               <v-text-field :value="payment.order_id" label="Order ID, Read Only." readonly></v-text-field>
+            </v-flex>
+            <v-flex xs12 sm6>
+              <v-text-field v-model="payment.promotion_code" label="Promotion Code"></v-text-field>
             </v-flex>
           </v-layout>
         </v-flex>
@@ -55,8 +66,13 @@
             <v-flex xs6 sm3>
               <v-btn color="primary" class="text-capitalize">Submit</v-btn>
             </v-flex>-->
-            <v-flex xs6 sm4 class="text-xs-center">
-              <v-btn color="primary" class="text-capitalize" @click="goToRoute('Review')">Review</v-btn>
+            <v-flex xs6 sm4>
+              <v-btn
+                block
+                color="primary"
+                class="text-capitalize"
+                @click="goToRoute('Review')"
+              >Review</v-btn>
             </v-flex>
           </v-layout>
         </v-flex>
@@ -74,7 +90,7 @@ export default {
     LogoGrid
   },
   mounted() {
-    this.payment = Object.assign(this.payment, this.$route.query);
+    this.payment = Object.assign(this.payment, this.$route.query); // data src is url
   },
   watch: {
     payment: {
@@ -97,10 +113,12 @@ export default {
       order_id: null,
       first_name: null,
       last_name: null,
+      email: null,
       amount: null,
       currency: "USD",
       std_unit: "dollar",
       min_unit: "cent",
+      promotion_code: null,
       comments: null,
       pay_method: null
     }
