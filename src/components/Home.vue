@@ -57,7 +57,7 @@
           ></v-textarea>
         </v-flex>
 
-        <logo-grid></logo-grid>
+        <logo-grid @logo-selected="updateLogo"></logo-grid>
         <v-flex xs12 sm12>
           <v-layout row justify-center>
             <!-- <v-flex xs6 sm3 class="text-xs-right">
@@ -135,6 +135,9 @@ export default {
     },
     matchStartingChars(item, queryText, itemText) {
       console.log(item, queryText, itemText);
+    },
+    updateLogo(logo, is_selected) {
+      this.payment.pay_method = is_selected ? logo : null;
     }
   }
 };

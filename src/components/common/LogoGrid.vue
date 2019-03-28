@@ -46,6 +46,7 @@ export default {
           this.logos[key].is_selected = false;
         }
       });
+      this.$emit("logo-selected", i, this.logos[i].is_selected);
     }
   }
 };
