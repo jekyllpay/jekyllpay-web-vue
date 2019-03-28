@@ -30,7 +30,7 @@
                 label="Currency"
                 v-model="payment.currency"
                 :items="currencyList"
-                :filter="matchStartingChars"
+                :filter="matchStartingCharsOnly"
               ></v-autocomplete>
             </v-flex>
           </v-layout>
@@ -133,8 +133,10 @@ export default {
     goToRoute(routeName) {
       this.$router.push({ name: routeName });
     },
-    matchStartingChars(item, queryText, itemText) {
-      console.log(item, queryText, itemText);
+    matchStartingCharsOnly(item, queryText, itemText) {
+      let pattern = new RegExp(queryText, "i");
+      let r = pattern.exec(itemText);
+      return r === null ? false : r.index === 0;
     },
     updateLogo(logo, is_selected) {
       this.payment.pay_method = is_selected ? logo : null;
