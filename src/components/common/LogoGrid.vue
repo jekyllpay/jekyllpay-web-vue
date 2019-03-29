@@ -31,7 +31,8 @@ export default {
       paypal: { file: "paypal.jpg", is_selected: false },
       bitpay: { file: "bitpay.png", is_selected: false },
       alipay: { file: "alipay.jpg", is_selected: false },
-      wechat: { file: "wechat.jpg", is_selected: false }
+      wechat: { file: "wechat.jpg", is_selected: false },
+      jsb: { file: "jcb.png", is_selected: false }
     }
   }),
   methods: {

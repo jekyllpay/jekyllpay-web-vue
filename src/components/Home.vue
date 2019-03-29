@@ -20,10 +20,21 @@
         <v-flex xs12 sm12>
           <v-layout row wrap>
             <v-flex xs12 sm6>
-              <v-text-field v-model="payment.email" label="Email"></v-text-field>
+              <v-text-field
+                v-model="payment.email"
+                label="Email"
+                v-validate="'required|email'"
+                name="email"
+              ></v-text-field>
             </v-flex>
             <v-flex xs6 sm3>
-              <v-text-field v-model="payment.amount" label="Amount" type="number"></v-text-field>
+              <v-text-field
+                v-model="payment.amount"
+                label="Amount"
+                type="number"
+                v-validate="'decimal:2'"
+                name="amount"
+              ></v-text-field>
             </v-flex>
             <v-flex xs6 sm3 hide-details>
               <v-autocomplete
@@ -71,7 +82,7 @@
                 block
                 color="primary"
                 class="text-capitalize"
-                @click="goToRoute('Review')"
+                @click="onReview('Review')"
               >Review</v-btn>
             </v-flex>
           </v-layout>
@@ -99,7 +110,8 @@ export default {
           currentPayment: val
         });
       },
-      deep: true
+      deep: true,
+      immediate: true
     }
   },
   computed: {
@@ -130,6 +142,15 @@ export default {
     ...mapActions("payment", {
       updatePayment: "updatePayment"
     }),
+    onReview(routeName) {
+      this.$validator.validate().then(result => {
+        if (result) {
+          this.goToRoute(routeName);
+        } else {
+          alert("error");
+        }
+      });
+    },
     goToRoute(routeName) {
       this.$router.push({ name: routeName });
     },
