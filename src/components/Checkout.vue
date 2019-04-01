@@ -16,16 +16,20 @@
               <v-text-field
                 v-model="payment.first_name"
                 label="First Name"
-                :error-messages="err_msg.first_name"
-                @keyup="onKeyUpToResetErrMsg('first_name')"
+                v-validate="'required'"
+                name="first name"
+                :error-messages="err_msg['first name']"
+                @keyup="onKeyUpToResetErrMsg('first name')"
               ></v-text-field>
             </v-flex>
             <v-flex xs12 sm6>
               <v-text-field
                 v-model="payment.last_name"
                 label="Last Name"
-                :error-messages="err_msg.last_name"
-                @keyup="onKeyUpToResetErrMsg('last_name')"
+                v-validate="'required'"
+                name="last name"
+                :error-messages="err_msg['last name']"
+                @keyup="onKeyUpToResetErrMsg('last name')"
               ></v-text-field>
             </v-flex>
           </v-layout>
@@ -137,8 +141,8 @@ export default {
   },
   data: () => ({
     err_msg: {
-      first_name: [],
-      last_name: [],
+      "first name": [],
+      "last name": [],
       email: []
     },
     currencyList: ["USD"],
@@ -168,12 +172,10 @@ export default {
         if (result) {
           this.goToRoute(routeName);
         } else {
-          //   alert("error");
-          this.err_msg = {
-            first_name: ["required"],
-            last_name: ["required"],
-            email: ["must be valid email address"]
-          };
+          //   console.log(this.$validator.errors.items);
+          this.$validator.errors.items.forEach(item => {
+            this.err_msg[item.field] = [item.msg];
+          });
         }
       });
     },
