@@ -4,24 +4,31 @@ import Router from 'vue-router';
 Vue.use(Router);
 
 import Home from '@/components/Home';
+import Checkout from '@/components/Checkout';
 import Review from '@/components/Review';
 
 export default new Router({
     mode: 'history',
-    routes:[
+    routes: [
         {
-            path:'/',
-            name:"Home",
-            component: Home
+            path: '/',
+            name: "Home",
+            component: Home,
+            redirect: { name: "Checkout" }
         },
         {
-            path:'/review',
-            name:"Review",
+            path: '/checkout',
+            name: "Checkout",
+            component: Checkout
+        },
+        {
+            path: '/review',
+            name: "Review",
             component: Review
         },
         {
             path: '*',
-            name:"NotFound",
+            name: "NotFound",
             component: () => import('@/components/NotFound.vue')
         }
     ]
