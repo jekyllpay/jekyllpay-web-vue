@@ -15,7 +15,7 @@
             <v-flex xs12 sm6>
               <v-text-field
                 v-model="payment.first_name"
-                label="First Name"
+                label="First Name *"
                 v-validate="'required'"
                 name="first name"
                 :error-messages="err_msg['first name']"
@@ -25,7 +25,7 @@
             <v-flex xs12 sm6>
               <v-text-field
                 v-model="payment.last_name"
-                label="Last Name"
+                label="Last Name *"
                 v-validate="'required'"
                 name="last name"
                 :error-messages="err_msg['last name']"
@@ -40,7 +40,7 @@
             <v-flex xs12 sm6>
               <v-text-field
                 v-model="payment.email"
-                label="Email"
+                label="Email *"
                 v-validate="'required|email'"
                 name="email"
                 :error-messages="err_msg.email"
@@ -50,19 +50,27 @@
             <v-flex xs6 sm3>
               <v-text-field
                 v-model="payment.amount"
-                label="Amount"
-                type="number"
-                v-validate="'decimal:2'"
+                label="Amount *"
+                v-validate="'required|decimal:2'"
                 name="amount"
+                :error-messages="err_msg.amount"
+                @keyup="onKeyUpToResetErrMsg('amount')"
               ></v-text-field>
             </v-flex>
-            <v-flex xs6 sm3 hide-details>
+            <v-flex xs6 sm3>
               <v-autocomplete
                 label="Currency"
                 v-model="payment.currency"
                 :items="currencyList"
                 :filter="matchStartingCharsOnly"
-              ></v-autocomplete>
+                dense
+              >
+                <template v-slot:no-data>
+                  <v-list-tile>
+                    <v-list-tile-title>Currency Not Found</v-list-tile-title>
+                  </v-list-tile>
+                </template>
+              </v-autocomplete>
             </v-flex>
           </v-layout>
         </v-flex>
@@ -143,16 +151,17 @@ export default {
     err_msg: {
       "first name": [],
       "last name": [],
-      email: []
+      email: [],
+      amount: []
     },
-    currencyList: ["USD"],
+    currencyList: ["USD", "BTC", "CNY", "EUR", "GBP", "HKD", "JPY"], // must be UPPERCASE
     payment: {
       order_id: null,
       first_name: null,
       last_name: null,
       email: null,
       amount: null,
-      currency: "USD",
+      currency: "USD", // must be UPPERCASE
       std_unit: "dollar",
       min_unit: "cent",
       promotion_code: null,
@@ -172,7 +181,7 @@ export default {
         if (result) {
           this.goToRoute(routeName);
         } else {
-          //   console.log(this.$validator.errors.items);
+          console.log(this.$validator.errors.items);
           this.$validator.errors.items.forEach(item => {
             this.err_msg[item.field] = [item.msg];
           });
@@ -200,5 +209,13 @@ export default {
 <style>
 .checkout-page-btn {
   pointer-events: none;
+}
+
+.v-list__tile.v-list__tile--link.theme--light.v-list__tile--highlighted {
+  background-color: yellow !important;
+}
+
+.v-list__tile__mask {
+  background-color: yellow !important;
 }
 </style>
