@@ -16,7 +16,8 @@
 
             <v-divider></v-divider>
 
-            <v-stepper-step step="2" v-if="payment_success">Success</v-stepper-step>
+            <v-stepper-step step="2" v-if="payment_status === 'success'">Success</v-stepper-step>
+            <v-stepper-step step="2" v-else-if="payment_status === 'loading'">Pending</v-stepper-step>
             <v-stepper-step step="2" v-else>Failure</v-stepper-step>
           </v-stepper-header>
 
@@ -50,7 +51,7 @@ export default {
   name: "Review",
   data: () => ({
     step: 0,
-    payment_success: true
+    payment_status: "success" // ['success', 'loading', 'failure']
   })
 };
 </script>
