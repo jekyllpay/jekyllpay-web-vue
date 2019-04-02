@@ -13,29 +13,42 @@
         <v-stepper v-model="step">
           <v-stepper-header>
             <v-stepper-step :complete="step > 1" step="1">Review & Pay</v-stepper-step>
-
             <v-divider></v-divider>
-
-            <v-stepper-step step="2" v-if="payment_status === 'success'">Success</v-stepper-step>
+            <v-stepper-step step="2" v-if="payment_status === 'off'">Success</v-stepper-step>
             <v-stepper-step step="2" v-else-if="payment_status === 'loading'">Pending</v-stepper-step>
+            <v-stepper-step
+              step="2"
+              :complete="payment_status === 'success'"
+              v-else-if="payment_status === 'success'"
+            >Success</v-stepper-step>
             <v-stepper-step step="2" v-else>Failure</v-stepper-step>
           </v-stepper-header>
 
           <v-stepper-items>
             <v-stepper-content step="1">
-              <v-card class="mb-5" color="grey lighten-1" height="200px"></v-card>
-
-              <v-btn color="primary" @click="step = 2">Continue</v-btn>
-
-              <v-btn flat>Cancel</v-btn>
+              <v-layout row wrap>
+                <v-flex xs12>
+                  <template v-for="(value, key) in payment">
+                    <v-text-field :value="value" :key="key" readonly></v-text-field>
+                  </template>
+                </v-flex>
+                <v-flex xs12 class="text-xs-center">
+                  <v-btn color="primary" @click="step = 2" class="text-capitalize">Confirm and Pay</v-btn>
+                  <v-btn flat @click="goToRoute('Checkout')" class="text-capitalize">Edit</v-btn>
+                </v-flex>
+              </v-layout>
             </v-stepper-content>
 
             <v-stepper-content step="2">
-              <v-card class="mb-5" color="grey lighten-1" height="200px"></v-card>
-
-              <v-btn color="primary" @click="step = 1">Continue</v-btn>
-
-              <v-btn flat>Cancel</v-btn>
+              <v-layout row wrap>
+                <v-flex xs12>
+                  <v-card class="mb-5" color="grey lighten-1" height="200px"></v-card>
+                </v-flex>
+                <v-flex xs12 class="text-xs-center">
+                  <v-btn color="primary" @click="step = 1">Continue</v-btn>
+                  <v-btn flat>Cancel</v-btn>
+                </v-flex>
+              </v-layout>
             </v-stepper-content>
           </v-stepper-items>
         </v-stepper>
@@ -49,10 +62,20 @@
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Review",
+  computed: {
+    ...mapGetters("payment", {
+      payment: "getPayment"
+    })
+  },
   data: () => ({
     step: 0,
-    payment_status: "success" // ['success', 'loading', 'failure']
-  })
+    payment_status: "off" // ['off', 'loading', 'success', 'failure']
+  }),
+  methods: {
+    goToRoute(routeName) {
+      this.$router.push({ name: routeName });
+    }
+  }
 };
 </script>
 
