@@ -78,19 +78,24 @@
         <v-flex xs12 sm12>
           <v-layout row wrap>
             <v-flex xs12 sm6>
-              <v-text-field :value="payment.order_id" label="Order ID, Read Only." readonly></v-text-field>
+              <v-text-field
+                :value="payment.order_id"
+                label="Order ID, Read Only."
+                readonly
+                placeholder=" "
+              ></v-text-field>
             </v-flex>
             <v-flex xs12 sm6>
-              <v-text-field v-model="payment.promotion_code" label="Promotion Code"></v-text-field>
+              <v-text-field v-model="payment.promotion_code" label="Promotion Code (Optional)"></v-text-field>
             </v-flex>
           </v-layout>
         </v-flex>
 
         <v-flex xs12 sm12>
           <v-textarea
-            label="Comments"
-            v-model="payment.comments"
-            placeholder="Make some comments here"
+            label="Message"
+            v-model="payment.message"
+            placeholder="Leave a message here"
             rows="3"
             hide-details
           ></v-textarea>
@@ -165,7 +170,7 @@ export default {
       std_unit: "dollar",
       min_unit: "cent",
       promotion_code: null,
-      comments: null,
+      message: null,
       pay_method: null
     }
   }),
