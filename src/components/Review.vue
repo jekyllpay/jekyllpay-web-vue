@@ -79,20 +79,8 @@
                       ></v-text-field>
                     </v-flex>
                     <v-flex xs12>
-                      <v-layout row wrap id="cc_or_qr_info">
-                        <!-- <div id="cc_or_qr_info"></div> -->
-                        <v-flex xs12>
-                          <div id="stripe_card_number"></div>
-                        </v-flex>
-                        <v-flex xs12 sm4>
-                          <div id="stripe_card_expiry"></div>
-                        </v-flex>
-                        <v-flex xs12 sm4>
-                          <div id="stripe_card_cvc"></div>
-                        </v-flex>
-                        <v-flex xs12 sm4>
-                          <div id="stripe_card_zip"></div>
-                        </v-flex>
+                      <v-layout row wrap>
+                        <div id="cc_or_qr_info" style="width:100%"></div>
                       </v-layout>
                     </v-flex>
                   </v-layout>
@@ -170,9 +158,6 @@ export default {
   data: () => ({
     stripe: null,
     elements: null,
-    cardNumber: null,
-    cardExpiry: null,
-    cardCvc: null,
     card: null,
     discount: 0,
     paymentFields: {
@@ -192,23 +177,10 @@ export default {
   methods: {
     initStripe() {
       this.stripe = window.Stripe("pk_test_l1Wc9afPVQu7MyUUEzqH2Ids");
-      this.elements = this.stripe.elements({
-        locale: "auto"
-      });
-      this.cardNumber = this.elements.create("cardNumber");
-      this.cardNumber.mount(this.$el.querySelector("#stripe_card_number"));
-      this.cardExpiry = this.elements.create("cardExpiry");
-      this.cardExpiry.mount(this.$el.querySelector("#stripe_card_expiry"));
-      this.cardCvc = this.elements.create("cardCvc");
-      this.cardCvc.mount(this.$el.querySelector("#stripe_card_cvc"));
-      // registerElements(
-      //   [this.cardNumber, this.cardExpiry, this.cardCvc],
-      //   "cc_or_qr_info"
-      // );
-      // this.card = this.elements.create("card", {
-      //   style: style
-      // });
+      this.elements = this.stripe.elements({ locale: "auto" });
+      this.card = this.elements.create("card", { style: style });
       // this.card.mount(this.$el.querySelector("#cc_or_qr_info"));
+      this.card.mount("#cc_or_qr_info");
     },
     goToRoute(routeName) {
       this.$router.push({ name: routeName });
