@@ -55,14 +55,55 @@
                         placeholder="No message"
                         readonly
                         hide-details
-                        rows="6"
+                        rows="3"
                       ></v-textarea>
                     </v-flex>
                   </v-layout>
                 </v-flex>
 
+                <v-flex xs12 sm6>
+                  <v-layout row wrap>
+                    <v-flex xs12>
+                      <v-btn
+                        block
+                        color="blue lighten-4"
+                        class="text-capitalize elevation-0 review-page-title-btn"
+                      >Payment Info</v-btn>
+                    </v-flex>
+                    <v-flex xs12>
+                      <v-text-field
+                        label="Final Price"
+                        :value="final_price + '  ' + payment.currency"
+                        readonly
+                        hide-details
+                      ></v-text-field>
+                    </v-flex>
+                    <v-flex xs12>
+                      <v-layout row wrap id="cc_or_qr_info">
+                        <!-- <div id="cc_or_qr_info"></div> -->
+                        <v-flex xs12>
+                          <div id="stripe_card_number"></div>
+                        </v-flex>
+                        <v-flex xs12 sm4>
+                          <div id="stripe_card_expiry"></div>
+                        </v-flex>
+                        <v-flex xs12 sm4>
+                          <div id="stripe_card_cvc"></div>
+                        </v-flex>
+                        <v-flex xs12 sm4>
+                          <div id="stripe_card_zip"></div>
+                        </v-flex>
+                      </v-layout>
+                    </v-flex>
+                  </v-layout>
+                </v-flex>
+
                 <v-flex xs12 class="text-xs-center mt-3">
-                  <v-btn color="primary" @click="step = 2" class="text-capitalize">Confirm and Pay</v-btn>
+                  <v-btn
+                    color="primary"
+                    @click.prevent="confirmAndPay()"
+                    class="text-capitalize"
+                  >Confirm and Pay</v-btn>
                   <v-btn flat @click="goToRoute('Checkout')" class="text-capitalize">Revise Order</v-btn>
                 </v-flex>
               </v-layout>
@@ -90,19 +131,49 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { getDiscount } from "@/utils/api";
+
+let style = {
+  base: {
+    color: "#32325d",
+    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+    fontSmoothing: "antialiased",
+    fontSize: "16px",
+    "::placeholder": {
+      color: "#aab7c4"
+    }
+  },
+  invalid: {
+    color: "#fa755a",
+    iconColor: "#fa755a"
+  }
+};
+
 export default {
   name: "Review",
   mounted() {
     getDiscount()
       .then(discount => (this.discount = discount))
       .catch(err => console.log(err));
+
+    this.initStripe();
   },
   computed: {
     ...mapGetters("payment", {
       payment: "getPayment"
-    })
+    }),
+    final_price: {
+      get: function() {
+        return this.payment.amount - this.discount;
+      }
+    }
   },
   data: () => ({
+    stripe: null,
+    elements: null,
+    cardNumber: null,
+    cardExpiry: null,
+    cardCvc: null,
+    card: null,
     discount: 0,
     paymentFields: {
       order_id: "Order Id",
@@ -111,15 +182,41 @@ export default {
       last_name: "Last Name",
       amount: "Amount",
       currency: "Currency",
-      email: "Email"
+      email: "Email",
+      phone: "Phone"
     },
 
     step: 0,
     payment_status: "off" // ['off', 'loading', 'success', 'failure']
   }),
   methods: {
+    initStripe() {
+      this.stripe = window.Stripe("pk_test_l1Wc9afPVQu7MyUUEzqH2Ids");
+      this.elements = this.stripe.elements({
+        locale: "auto"
+      });
+      this.cardNumber = this.elements.create("cardNumber");
+      this.cardNumber.mount(this.$el.querySelector("#stripe_card_number"));
+      this.cardExpiry = this.elements.create("cardExpiry");
+      this.cardExpiry.mount(this.$el.querySelector("#stripe_card_expiry"));
+      this.cardCvc = this.elements.create("cardCvc");
+      this.cardCvc.mount(this.$el.querySelector("#stripe_card_cvc"));
+      // registerElements(
+      //   [this.cardNumber, this.cardExpiry, this.cardCvc],
+      //   "cc_or_qr_info"
+      // );
+      // this.card = this.elements.create("card", {
+      //   style: style
+      // });
+      // this.card.mount(this.$el.querySelector("#cc_or_qr_info"));
+    },
     goToRoute(routeName) {
       this.$router.push({ name: routeName });
+    },
+    confirmAndPay: function() {
+      this.stripe.createToken(this.card).then(function(result) {
+        console.log(result);
+      });
     }
   }
 };

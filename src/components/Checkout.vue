@@ -14,6 +14,17 @@
           <v-layout row wrap>
             <v-flex xs12 sm6>
               <v-text-field
+                v-model="payment.email"
+                label="Email *"
+                v-validate="'required|email'"
+                name="email"
+                :error-messages="err_msg.email"
+                @keyup="onKeyUpToResetErrMsg('email')"
+                @input="getUserProfile(payment.email)"
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs6 sm3>
+              <v-text-field
                 v-model="payment.first_name"
                 label="First Name *"
                 v-validate="'required'"
@@ -22,7 +33,7 @@
                 @keyup="onKeyUpToResetErrMsg('first name')"
               ></v-text-field>
             </v-flex>
-            <v-flex xs12 sm6>
+            <v-flex xs6 sm3>
               <v-text-field
                 v-model="payment.last_name"
                 label="Last Name *"
@@ -38,14 +49,7 @@
         <v-flex xs12 sm12>
           <v-layout row wrap>
             <v-flex xs12 sm6>
-              <v-text-field
-                v-model="payment.email"
-                label="Email *"
-                v-validate="'required|email'"
-                name="email"
-                :error-messages="err_msg.email"
-                @keyup="onKeyUpToResetErrMsg('email')"
-              ></v-text-field>
+              <v-text-field v-model="payment.phone" label="Phone"></v-text-field>
             </v-flex>
             <v-flex xs6 sm3>
               <v-text-field
@@ -165,6 +169,7 @@ export default {
       first_name: null,
       last_name: null,
       email: null,
+      phone: null,
       amount: null,
       currency: "USD", // must be UPPERCASE
       std_unit: "dollar",
@@ -186,7 +191,7 @@ export default {
         if (result) {
           this.goToRoute(routeName);
         } else {
-          console.log(this.$validator.errors.items);
+          // console.log(this.$validator.errors.items);
           this.$validator.errors.items.forEach(item => {
             this.err_msg[item.field] = [item.msg];
           });
@@ -206,6 +211,9 @@ export default {
     },
     onKeyUpToResetErrMsg(fieldName) {
       this.err_msg[fieldName] = [];
+    },
+    getUserProfile(email) {
+      console.log(email);
     }
   }
 };
