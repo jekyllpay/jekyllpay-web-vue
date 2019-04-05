@@ -78,7 +78,7 @@
                         hide-details
                       ></v-text-field>
                     </v-flex>
-                    <v-flex xs12 v-if="methodsForStripe.includes(payment.pay_method )">
+                    <v-flex xs12 v-if="methodsForStripe.includes(payment.pay_method)">
                       <stripe-gateway ref="stripe"></stripe-gateway>
                     </v-flex>
                   </v-layout>
@@ -90,7 +90,7 @@
                     @click.prevent="confirmAndPay()"
                     class="text-capitalize"
                   >Confirm and Pay</v-btn>
-                  <v-btn flat @click="goToRoute('Checkout')" class="text-capitalize">Revise Order</v-btn>
+                  <v-btn @click="goToRoute('Checkout')" class="text-capitalize">Revise Order</v-btn>
                 </v-flex>
               </v-layout>
             </v-stepper-content>
