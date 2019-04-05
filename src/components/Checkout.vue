@@ -20,37 +20,9 @@
                 name="email"
                 :error-messages="err_msg.email"
                 @keyup="onKeyUpToResetErrMsg('email')"
-                @input="getUserProfile(payment.email)"
               ></v-text-field>
             </v-flex>
-            <v-flex xs6 sm3>
-              <v-text-field
-                v-model="payment.first_name"
-                label="First Name *"
-                v-validate="'required'"
-                name="first name"
-                :error-messages="err_msg['first name']"
-                @keyup="onKeyUpToResetErrMsg('first name')"
-              ></v-text-field>
-            </v-flex>
-            <v-flex xs6 sm3>
-              <v-text-field
-                v-model="payment.last_name"
-                label="Last Name *"
-                v-validate="'required'"
-                name="last name"
-                :error-messages="err_msg['last name']"
-                @keyup="onKeyUpToResetErrMsg('last name')"
-              ></v-text-field>
-            </v-flex>
-          </v-layout>
-        </v-flex>
 
-        <v-flex xs12 sm12>
-          <v-layout row wrap>
-            <v-flex xs12 sm6>
-              <v-text-field v-model="payment.phone" label="Phone"></v-text-field>
-            </v-flex>
             <v-flex xs6 sm3>
               <v-text-field
                 v-model="payment.amount"
@@ -75,6 +47,34 @@
                   </v-list-tile>
                 </template>
               </v-autocomplete>
+            </v-flex>
+          </v-layout>
+        </v-flex>
+
+        <v-flex xs12 sm12>
+          <v-layout row wrap>
+            <v-flex xs6 sm3>
+              <v-text-field
+                v-model="payment.first_name"
+                label="First Name *"
+                v-validate="'required'"
+                name="first name"
+                :error-messages="err_msg['first name']"
+                @keyup="onKeyUpToResetErrMsg('first name')"
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs6 sm3>
+              <v-text-field
+                v-model="payment.last_name"
+                label="Last Name *"
+                v-validate="'required'"
+                name="last name"
+                :error-messages="err_msg['last name']"
+                @keyup="onKeyUpToResetErrMsg('last name')"
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs12 sm6>
+              <v-text-field v-model="payment.phone" label="Phone"></v-text-field>
             </v-flex>
           </v-layout>
         </v-flex>
@@ -211,9 +211,6 @@ export default {
     },
     onKeyUpToResetErrMsg(fieldName) {
       this.err_msg[fieldName] = [];
-    },
-    getUserProfile(email) {
-      console.log(email);
     }
   }
 };
