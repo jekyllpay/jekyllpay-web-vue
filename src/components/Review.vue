@@ -131,7 +131,6 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { getDiscount } from "@/utils/api";
-
 let style = {
   base: {
     color: "#32325d",
@@ -147,7 +146,6 @@ let style = {
     iconColor: "#fa755a"
   }
 };
-
 export default {
   name: "Review",
   mounted() {
@@ -155,7 +153,19 @@ export default {
       .then(discount => (this.discount = discount))
       .catch(err => console.log(err));
 
-    this.initStripe();
+    let stripeScript = document.getElementById("stripe-script");
+    if (!stripeScript) {
+      stripeScript = document.createElement("script");
+      stripeScript.src = "https://js.stripe.com/v3/";
+      stripeScript.id = "stripe-script";
+      document.body.appendChild(stripeScript);
+      stripeScript.addEventListener(
+        "load",
+        function() {
+          this.initStripe();
+        }.bind(this)
+      );
+    }
   },
   computed: {
     ...mapGetters("payment", {
@@ -209,7 +219,8 @@ export default {
     },
     confirmAndPay: async function() {
       let additionalData = {
-        name: this.payment.first_name + " " + this.payment.last_name
+        name: this.payment.first_name + " " + this.payment.last_name,
+        address_zip: this.cardZip
       };
       const { token, error } = await this.stripe.createToken(
         this.cardNumber,

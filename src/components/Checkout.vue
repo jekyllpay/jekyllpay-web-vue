@@ -137,6 +137,7 @@ export default {
   components: {
     LogoGrid
   },
+
   mounted() {
     this.payment = Object.assign(this.payment, this.$route.query); // data src is url
   },
@@ -202,9 +203,7 @@ export default {
       this.$router.push({ name: routeName });
     },
     matchStartingCharsOnly(item, queryText, itemText) {
-      let pattern = new RegExp(queryText, "i");
-      let r = pattern.exec(itemText);
-      return r === null ? false : r.index === 0;
+      return itemText.toLowerCase().startsWith(queryText.toLowerCase());
     },
     updateLogo(logo, is_selected) {
       this.payment.pay_method = is_selected ? logo : null;
