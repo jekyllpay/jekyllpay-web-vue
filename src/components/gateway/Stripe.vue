@@ -21,11 +21,11 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "StripeGateway",
   mounted() {
-    let stripeScript = document.getElementById("stripe-script");
-    if (!stripeScript) {
-      stripeScript = document.createElement("script");
+    if (window.Stripe) {
+      this.initStripe();
+    } else {
+      let stripeScript = document.createElement("script");
       stripeScript.src = "https://js.stripe.com/v3/";
-      stripeScript.id = "stripe-script";
       document.body.appendChild(stripeScript);
       stripeScript.addEventListener(
         "load",

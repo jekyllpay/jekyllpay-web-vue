@@ -78,7 +78,7 @@
                         hide-details
                       ></v-text-field>
                     </v-flex>
-                    <v-flex xs12>
+                    <v-flex xs12 v-if="methodsForStripe.includes(payment.pay_method )">
                       <stripe-gateway ref="stripe"></stripe-gateway>
                     </v-flex>
                   </v-layout>
@@ -151,7 +151,7 @@ export default {
       email: "Email",
       phone: "Phone"
     },
-
+    methodsForStripe: ["visa", "mastercard"],
     step: 0,
     payment_status: "off" // ['off', 'loading', 'success', 'failure']
   }),
