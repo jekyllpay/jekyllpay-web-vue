@@ -79,21 +79,7 @@
                       ></v-text-field>
                     </v-flex>
                     <v-flex xs12>
-                      <v-layout row wrap>
-                        <!-- <div id="cc_or_qr_info" style="width:100%"></div> -->
-                        <v-flex xs12>
-                          <div id="stripe-card-number"></div>
-                        </v-flex>
-                        <v-flex xs4>
-                          <div id="stripe-card-expiry"></div>
-                        </v-flex>
-                        <v-flex xs4>
-                          <div id="stripe-card-cvc"></div>
-                        </v-flex>
-                        <v-flex xs4>
-                          <v-text-field v-model="cardZip" placeholder="Zip Code"></v-text-field>
-                        </v-flex>
-                      </v-layout>
+                      <stripe-gateway ref="stripe"></stripe-gateway>
                     </v-flex>
                   </v-layout>
                 </v-flex>
@@ -131,41 +117,17 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { getDiscount } from "@/utils/api";
-let style = {
-  base: {
-    color: "#32325d",
-    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-    fontSmoothing: "antialiased",
-    fontSize: "16px",
-    "::placeholder": {
-      color: "#aab7c4"
-    }
-  },
-  invalid: {
-    color: "#fa755a",
-    iconColor: "#fa755a"
-  }
-};
+import StripeGateway from "@/components/gateway/Stripe";
+
 export default {
   name: "Review",
+  components: {
+    StripeGateway
+  },
   mounted() {
     getDiscount()
       .then(discount => (this.discount = discount))
       .catch(err => console.log(err));
-
-    let stripeScript = document.getElementById("stripe-script");
-    if (!stripeScript) {
-      stripeScript = document.createElement("script");
-      stripeScript.src = "https://js.stripe.com/v3/";
-      stripeScript.id = "stripe-script";
-      document.body.appendChild(stripeScript);
-      stripeScript.addEventListener(
-        "load",
-        function() {
-          this.initStripe();
-        }.bind(this)
-      );
-    }
   },
   computed: {
     ...mapGetters("payment", {
@@ -178,13 +140,6 @@ export default {
     }
   },
   data: () => ({
-    stripe: null,
-    elements: null,
-    cardNumber: null,
-    cardExpiry: null,
-    cardCvc: null,
-    cardZip: null,
-    // card: null,
     discount: 0,
     paymentFields: {
       order_id: "Order Id",
@@ -201,32 +156,11 @@ export default {
     payment_status: "off" // ['off', 'loading', 'success', 'failure']
   }),
   methods: {
-    initStripe() {
-      this.stripe = window.Stripe("pk_test_l1Wc9afPVQu7MyUUEzqH2Ids");
-      this.elements = this.stripe.elements({ locale: "auto" });
-      this.cardNumber = this.elements.create("cardNumber");
-      this.cardNumber.mount("#stripe-card-number");
-      this.cardExpiry = this.elements.create("cardExpiry");
-      this.cardExpiry.mount("#stripe-card-expiry");
-      this.cardCvc = this.elements.create("cardCvc");
-      this.cardCvc.mount("#stripe-card-cvc");
-      // this.card = this.elements.create("card", { style: style });
-      // // this.card.mount(this.$el.querySelector("#cc_or_qr_info"));
-      // this.card.mount("#cc_or_qr_info");
-    },
     goToRoute(routeName) {
       this.$router.push({ name: routeName });
     },
-    confirmAndPay: async function() {
-      let additionalData = {
-        name: this.payment.first_name + " " + this.payment.last_name,
-        address_zip: this.cardZip
-      };
-      const { token, error } = await this.stripe.createToken(
-        this.cardNumber,
-        additionalData
-      );
-      console.log(token, error);
+    confirmAndPay: function() {
+      this.$refs.stripe.submit();
     }
   }
 };
