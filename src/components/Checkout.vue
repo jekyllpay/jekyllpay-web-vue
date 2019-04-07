@@ -108,20 +108,20 @@
         <logo-grid @logo-selected="updateLogo"></logo-grid>
         <v-flex xs12 sm12>
           <v-layout row justify-center>
-            <!-- <v-flex xs6 sm3 class="text-xs-right">
-              <v-btn color="primary" class="text-capitalize">Review</v-btn>
+            <v-flex xs6 sm2>
+              <v-btn block color="primary" class="text-capitalize" @click="onReview('Review')">Next</v-btn>
             </v-flex>
-            <v-flex xs6 sm3>
-              <v-btn color="primary" class="text-capitalize">Submit</v-btn>
-            </v-flex>-->
-            <v-flex xs6 sm4>
+            <v-flex xs6 sm2>
+              <v-btn block class="text-capitalize" @click="resetPayment()">Reset</v-btn>
+            </v-flex>
+            <!-- <v-flex xs6 sm4>
               <v-btn
                 block
                 color="primary"
                 class="text-capitalize"
                 @click="onReview('Review')"
               >Review</v-btn>
-            </v-flex>
+            </v-flex>-->
           </v-layout>
         </v-flex>
       </v-flex>
@@ -138,11 +138,7 @@ export default {
     LogoGrid
   },
   mounted() {
-    console.log(this.$store.getters["payment/getPayment"]);
-    this.payment =
-      this.$store.getters["payment/getPayment"] === null
-        ? Object.assign(this.payment, this.$route.query)
-        : this.$store.getters["payment/getPayment"];
+    this.initPayment();
   },
   watch: {
     payment: {
@@ -189,6 +185,12 @@ export default {
     ...mapActions("payment", {
       updatePayment: "updatePayment"
     }),
+    initPayment() {
+      this.payment =
+        this.$store.getters["payment/getPayment"] === null
+          ? Object.assign(this.payment, this.$route.query)
+          : this.$store.getters["payment/getPayment"];
+    },
     onReview(routeName) {
       this.$validator.validate().then(result => {
         if (result) {
@@ -212,6 +214,22 @@ export default {
     },
     onKeyUpToResetErrMsg(fieldName) {
       this.err_msg[fieldName] = [];
+    },
+    resetPayment() {
+      this.payment = {
+        order_id: null,
+        first_name: null,
+        last_name: null,
+        email: null,
+        phone: null,
+        amount: null,
+        currency: "USD", // must be UPPERCASE
+        std_unit: "dollar",
+        min_unit: "cent",
+        promotion_code: null,
+        message: null,
+        pay_method: null
+      };
     }
   }
 };

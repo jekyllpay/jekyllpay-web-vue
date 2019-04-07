@@ -85,12 +85,23 @@
                 </v-flex>
 
                 <v-flex xs12 class="text-xs-center mt-3">
-                  <v-btn
-                    color="primary"
-                    @click.prevent="confirmAndPay()"
-                    class="text-capitalize"
-                  >Confirm and Pay</v-btn>
-                  <v-btn @click="goToRoute('Checkout')" class="text-capitalize">Revise Order</v-btn>
+                  <v-layout row justify-center>
+                    <v-flex xs6 sm2>
+                      <v-btn
+                        block
+                        color="primary"
+                        @click.prevent="confirmAndPay()"
+                        class="text-capitalize"
+                      >Confirm and Pay</v-btn>
+                    </v-flex>
+                    <v-flex xs6 sm2>
+                      <v-btn
+                        block
+                        @click="goToRoute('Checkout')"
+                        class="text-capitalize"
+                      >Revise Order</v-btn>
+                    </v-flex>
+                  </v-layout>
                 </v-flex>
               </v-layout>
             </v-stepper-content>
