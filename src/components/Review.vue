@@ -90,16 +90,12 @@
                       <v-btn
                         block
                         color="primary"
-                        @click.prevent="confirmAndPay()"
+                        @click.prevent="submitPayment()"
                         class="text-capitalize"
-                      >Confirm and Pay</v-btn>
+                      >Submit</v-btn>
                     </v-flex>
                     <v-flex xs6 sm2>
-                      <v-btn
-                        block
-                        @click="goToRoute('Checkout')"
-                        class="text-capitalize"
-                      >Revise Order</v-btn>
+                      <v-btn block @click="goToRoute('Checkout')" class="text-capitalize">Revise</v-btn>
                     </v-flex>
                   </v-layout>
                 </v-flex>
@@ -136,7 +132,7 @@ export default {
     StripeGateway
   },
   mounted() {
-    getDiscount()
+    getDiscount(this.payment)
       .then(discount => (this.discount = discount))
       .catch(err => console.log(err));
   },
@@ -170,7 +166,7 @@ export default {
     goToRoute(routeName) {
       this.$router.push({ name: routeName });
     },
-    confirmAndPay: function() {
+    submitPayment: function() {
       this.$refs.stripe.submit();
     }
   }

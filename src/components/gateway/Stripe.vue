@@ -1,6 +1,6 @@
 <template>
   <v-layout row wrap>
-    <!-- <div id="cc_or_qr_info" style="width:100%"></div> -->
+    <!-- <div id="stripe-card" style="width:100%"></div> -->
     <v-flex xs12>
       <div id="stripe-card-number"></div>
     </v-flex>
@@ -19,6 +19,7 @@
 <script>
 import { mapGetters } from "vuex";
 import axios from "axios";
+import { sendTokenToServer } from "@/utils/gateway/stripe-api";
 export default {
   name: "StripeGateway",
   mounted() {
@@ -61,8 +62,8 @@ export default {
       this.cardCvc = this.elements.create("cardCvc");
       this.cardCvc.mount("#stripe-card-cvc");
       // this.card = this.elements.create("card", { style: style });
-      // // this.card.mount(this.$el.querySelector("#cc_or_qr_info"));
-      // this.card.mount("#cc_or_qr_info");
+      // // this.card.mount(this.$el.querySelector("#stripe-card"));
+      // this.card.mount("#stripe-card");
     },
     async submit() {
       let additionalData = {
@@ -73,7 +74,15 @@ export default {
         this.cardNumber,
         additionalData
       );
-      console.log(token, error);
+      if (token && error === undefined) {
+        sendTokenToServer(token, this.payment).then(result => {
+          console.log(result);
+          return;
+        });
+      } else {
+        console.log(error);
+        return;
+      }
     }
   }
 };
