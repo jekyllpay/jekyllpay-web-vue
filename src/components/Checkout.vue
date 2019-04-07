@@ -137,10 +137,6 @@ export default {
   components: {
     LogoGrid
   },
-
-  mounted() {
-    this.payment = Object.assign(this.payment, this.$route.query); // data src is url
-  },
   watch: {
     payment: {
       handler: function(val) {
@@ -155,7 +151,15 @@ export default {
   computed: {
     ...mapGetters("orderid", {
       currentOrderId: "getOrderId"
-    })
+    }),
+    payment: {
+      get: function() {
+        return this.$store.getters["payment/getPayment"] === null
+          ? Object.assign(this.emptyPayment, this.$route.query)
+          : this.$store.getters["payment/getPayment"];
+      },
+      set: function(v) {}
+    }
   },
   data: () => ({
     err_msg: {
@@ -165,7 +169,7 @@ export default {
       amount: []
     },
     currencyList: ["USD", "BTC", "CNY", "EUR", "GBP", "HKD", "JPY"], // must be UPPERCASE
-    payment: {
+    emptyPayment: {
       order_id: null,
       first_name: null,
       last_name: null,
