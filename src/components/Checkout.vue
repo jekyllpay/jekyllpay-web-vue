@@ -137,6 +137,13 @@ export default {
   components: {
     LogoGrid
   },
+  mounted() {
+    console.log(this.$store.getters["payment/getPayment"]);
+    this.payment =
+      this.$store.getters["payment/getPayment"] === null
+        ? Object.assign(this.payment, this.$route.query)
+        : this.$store.getters["payment/getPayment"];
+  },
   watch: {
     payment: {
       handler: function(val) {
@@ -144,22 +151,13 @@ export default {
           currentPayment: val
         });
       },
-      deep: true,
-      immediate: true
+      deep: true
     }
   },
   computed: {
     ...mapGetters("orderid", {
       currentOrderId: "getOrderId"
-    }),
-    payment: {
-      get: function() {
-        return this.$store.getters["payment/getPayment"] === null
-          ? Object.assign(this.emptyPayment, this.$route.query)
-          : this.$store.getters["payment/getPayment"];
-      },
-      set: function(v) {}
-    }
+    })
   },
   data: () => ({
     err_msg: {
@@ -169,7 +167,7 @@ export default {
       amount: []
     },
     currencyList: ["USD", "BTC", "CNY", "EUR", "GBP", "HKD", "JPY"], // must be UPPERCASE
-    emptyPayment: {
+    payment: {
       order_id: null,
       first_name: null,
       last_name: null,
