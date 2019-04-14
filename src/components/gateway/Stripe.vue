@@ -19,7 +19,7 @@
 <script>
 import { mapGetters } from "vuex";
 import axios from "axios";
-import { sendTokenToServer } from "@/utils/gateway/stripe-api";
+import { charge } from "@/utils/gateway/stripe-api";
 export default {
   name: "StripeGateway",
   mounted() {
@@ -74,15 +74,18 @@ export default {
         this.cardNumber,
         additionalData
       );
-      if (token && error === undefined) {
-        sendTokenToServer(token, this.payment).then(result => {
-          console.log(result);
-          return;
-        });
-      } else {
+
+      if (error) {
         console.log(error);
         return;
       }
+
+      charge(token, this.payment).then(result => {
+        if (result.status == 201) {
+          this.initStripe();
+        }
+        return;
+      });
     }
   }
 };
