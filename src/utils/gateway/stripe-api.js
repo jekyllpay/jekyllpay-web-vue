@@ -10,7 +10,7 @@ async function charge(token, payment) {
             url: url,
             method: "post",
             data: {
-                stripe_token: token.id,
+                stripe_token_id: token.id,
                 order_id: payment.order_id,
                 first_name: payment.first_name,
                 last_name: payment.last_name,
