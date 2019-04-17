@@ -11,14 +11,13 @@
       <div id="stripe-card-cvc"></div>
     </v-flex>
     <v-flex xs4>
-      <v-text-field v-model="cardZip" placeholder="Zip Code"></v-text-field>
+      <v-text-field v-model="cardZip" placeholder="Zip Code" hide-details></v-text-field>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import axios from "axios";
 import { charge } from "@/utils/gateway/stripe-api";
 export default {
   name: "StripeGateway",
