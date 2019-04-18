@@ -3,13 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "jp:vue": "yarn serve",
+    "jp:vue": "vue-cli-service serve",
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "cross-env NODE_ENV=production vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "cross-env": "^5.2.0",
     "vee-validate": "^2.2.0",
     "vue": "^2.5.17",
     "vue-router": "^3.0.2",
