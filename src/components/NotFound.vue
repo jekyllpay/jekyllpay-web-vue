@@ -1,5 +1,9 @@
 <template>
-    <div>Hoome</div>
+  <div>Oops~~~!</div>
 </template>
 
-
+<script>
+export default {
+  name: "NotFound"
+};
+</script>
