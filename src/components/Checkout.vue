@@ -242,7 +242,7 @@ export default {
       next();
     } else {
       this.checkout_msg = {
-        show: true,
+        snackbar: true,
         icon: "fas fa-exclamation-circle",
         timeout: 2000,
         text: "Choose a Payment Method!"
