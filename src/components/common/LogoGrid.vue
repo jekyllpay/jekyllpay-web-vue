@@ -30,6 +30,7 @@ export default {
       discover: { file: "discover.jpg", is_selected: false },
       paypal: { file: "paypal.jpg", is_selected: false },
       bitpay: { file: "bitpay.png", is_selected: false },
+      unionpay: { file: "unionpay.png", is_selected: false },
       alipay: { file: "alipay.jpg", is_selected: false },
       wechat: { file: "wechat.jpg", is_selected: false },
       jsb: { file: "jcb.png", is_selected: false }
@@ -47,7 +48,7 @@ export default {
           this.logos[key].is_selected = false;
         }
       });
-      this.$emit("logo-selected", i, this.logos[i].is_selected);
+      this.$emit("logoSelected", i, this.logos[i].is_selected);
     }
   }
 };

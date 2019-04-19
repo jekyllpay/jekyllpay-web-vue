@@ -1,5 +1,6 @@
 <template>
   <v-container fluid grid-list-md>
+    <alert-message :msg="checkout_msg"></alert-message>
     <v-layout row wrap>
       <v-flex xs12 sm8 offset-sm2>
         <v-flex xs12 sm12>
@@ -105,7 +106,8 @@
           ></v-textarea>
         </v-flex>
 
-        <logo-grid @logo-selected="updateLogo"></logo-grid>
+        <logo-grid @logoSelected="updateLogo"></logo-grid>
+
         <v-flex xs12 sm12>
           <v-layout row justify-center>
             <v-flex xs6 sm2>
@@ -131,11 +133,13 @@
 
 <script>
 import LogoGrid from "@/components/common/LogoGrid";
+import AlertMessage from "@/components/common/AlertMessage";
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Checkout",
   components: {
-    LogoGrid
+    LogoGrid,
+    AlertMessage
   },
   mounted() {
     this.initPayment();
@@ -156,6 +160,7 @@ export default {
     })
   },
   data: () => ({
+    checkout_msg: {},
     err_msg: {
       "first name": [],
       "last name": [],
@@ -230,6 +235,19 @@ export default {
         message: null,
         pay_method: null
       };
+    }
+  },
+  beforeRouteLeave(to, from, next) {
+    if (this.payment.pay_method) {
+      next();
+    } else {
+      this.checkout_msg = {
+        show: true,
+        icon: "fas fa-exclamation-circle",
+        timeout: 2000,
+        text: "Choose a Payment Method!"
+      };
+      next(false);
     }
   }
 };
