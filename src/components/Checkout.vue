@@ -106,15 +106,15 @@
           ></v-textarea>
         </v-flex>
 
-        <logo-grid @logoSelected="updateLogo"></logo-grid>
+        <logo-grid @logoSelected="updateLogo" :logo_name="logo_name"></logo-grid>
 
         <v-flex xs12 sm12>
           <v-layout row justify-center>
             <v-flex xs6 sm2>
-              <v-btn block color="primary" class="text-capitalize" @click="onReview('Review')">Next</v-btn>
+              <v-btn block color="primary" class="text-capitalize" @click="onReview()">Next</v-btn>
             </v-flex>
             <v-flex xs6 sm2>
-              <v-btn block class="text-capitalize" @click="resetPayment()">Reset</v-btn>
+              <v-btn block class="text-capitalize" @click="resetEverything()">Reset</v-btn>
             </v-flex>
             <!-- <v-flex xs6 sm4>
               <v-btn
@@ -150,6 +150,7 @@ export default {
         this.updatePayment({
           currentPayment: val
         });
+        this.logo_name = val.pay_method;
       },
       deep: true
     }
@@ -181,7 +182,8 @@ export default {
       promotion_code: null,
       message: null,
       pay_method: null
-    }
+    },
+    logo_name: null
   }),
   methods: {
     ...mapActions("orderid", {
@@ -196,17 +198,28 @@ export default {
           ? Object.assign(this.payment, this.$route.query)
           : this.$store.getters["payment/getPayment"];
     },
-    onReview(routeName) {
-      this.$validator.validate().then(result => {
-        if (result) {
-          this.goToRoute(routeName);
-        } else {
-          // console.log(this.$validator.errors.items);
-          this.$validator.errors.items.forEach(item => {
-            this.err_msg[item.field] = [item.msg];
-          });
-        }
-      });
+    async onReview() {
+      console.log(this.payment.pay_method);
+      if (!this.payment.pay_method) {
+        this.checkout_msg = {
+          snackbar: true,
+          icon: "fas fa-exclamation-circle",
+          timeout: 2000,
+          text: "Choose a Payment Method!"
+        };
+        return;
+      }
+
+      let result = await this.$validator.validate();
+      if (!result) {
+        // console.log(this.$validator.errors.items);
+        this.$validator.errors.items.forEach(item => {
+          this.err_msg[item.field] = [item.msg];
+        });
+        return;
+      }
+
+      this.goToRoute("Review");
     },
     goToRoute(routeName) {
       this.$router.push({ name: routeName });
@@ -214,11 +227,25 @@ export default {
     matchStartingCharsOnly(item, queryText, itemText) {
       return itemText.toLowerCase().startsWith(queryText.toLowerCase());
     },
-    updateLogo(logo, is_selected) {
-      this.payment.pay_method = is_selected ? logo : null;
+    updateLogo(selected_logo) {
+      this.payment.pay_method = selected_logo.is_selected
+        ? selected_logo.name
+        : null;
     },
     onKeyUpToResetErrMsg(fieldName) {
       this.err_msg[fieldName] = [];
+    },
+    resetEverything() {
+      this.resetErrorMessage();
+      this.resetPayment();
+    },
+    resetErrorMessage() {
+      this.err_msg = {
+        "first name": [],
+        "last name": [],
+        email: [],
+        amount: []
+      };
     },
     resetPayment() {
       this.payment = {
@@ -235,19 +262,6 @@ export default {
         message: null,
         pay_method: null
       };
-    }
-  },
-  beforeRouteLeave(to, from, next) {
-    if (this.payment.pay_method) {
-      next();
-    } else {
-      this.checkout_msg = {
-        snackbar: true,
-        icon: "fas fa-exclamation-circle",
-        timeout: 2000,
-        text: "Choose a Payment Method!"
-      };
-      next(false);
     }
   }
 };

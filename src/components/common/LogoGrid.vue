@@ -1,16 +1,16 @@
 <template>
   <v-flex xs12 sm12>
     <v-layout row wrap>
-      <template v-for="i in Object.keys(logos)">
-        <v-flex :key="i" xs4 sm2>
+      <template v-for="(logo,index) in logos">
+        <v-flex :key="index" xs4 sm2>
           <v-layout row align-center>
             <v-flex xs8 class="text-xs-center">
               <v-avatar tile color="grey lighten-4">
-                <img :src="imgsrc(i)" :alt="i">
+                <img :src="imgsrc(logo)" :alt="logo.name">
               </v-avatar>
             </v-flex>
             <v-flex xs4>
-              <v-checkbox v-model="logos[i].is_selected" @click.stop="selectlogo(i)"></v-checkbox>
+              <v-checkbox v-model="logo.is_selected" @click.stop.prevent="selectLogo(logo)"></v-checkbox>
             </v-flex>
           </v-layout>
         </v-flex>
@@ -22,33 +22,58 @@
 <script>
 export default {
   name: "LogoGrid",
-  data: () => ({
-    logos: {
-      visa: { file: "visa.png", is_selected: false },
-      mastercard: { file: "mastercard.jpg", is_selected: false },
-      americanexpress: { file: "americanexpress.png", is_selected: false },
-      discover: { file: "discover.jpg", is_selected: false },
-      paypal: { file: "paypal.jpg", is_selected: false },
-      bitpay: { file: "bitpay.png", is_selected: false },
-      unionpay: { file: "unionpay.png", is_selected: false },
-      alipay: { file: "alipay.jpg", is_selected: false },
-      wechat: { file: "wechat.jpg", is_selected: false },
-      jsb: { file: "jcb.png", is_selected: false }
+  props: {
+    logo_name: {
+      type: String
     }
+  },
+  watch: {
+    logo_name: function(val) {
+      console.log(val);
+      if (val) {
+        this.logos.forEach(logo => {
+          if (logo.name == val) {
+            logo.is_selected = true;
+          } else {
+            logo.is_selected = false;
+          }
+        });
+      } else {
+        this.logos.forEach(logo => (logo.is_selected = false));
+      }
+    }
+  },
+  data: () => ({
+    logos: [
+      { name: "visa", file: "visa.png", is_selected: false },
+      { name: "mastercard", file: "mastercard.jpg", is_selected: false },
+      {
+        name: "americanexpress",
+        file: "americanexpress.png",
+        is_selected: false
+      },
+      { name: "discover", file: "discover.jpg", is_selected: false },
+      { name: "paypal", file: "paypal.jpg", is_selected: false },
+      { name: "bitpay", file: "bitpay.png", is_selected: false },
+      { name: "unionpay", file: "unionpay.png", is_selected: false },
+      { name: "alipay", file: "alipay.jpg", is_selected: false },
+      { name: "wechat", file: "wechat.jpg", is_selected: false },
+      { name: "jcb", file: "jcb.png", is_selected: false }
+    ]
   }),
   methods: {
-    imgsrc(i) {
-      return require("@/assets/logos/" + this.logos[i].file);
+    imgsrc(logo) {
+      return require("@/assets/logos/" + logo.file);
     },
-    selectlogo(i) {
-      Object.keys(this.logos).forEach(key => {
-        if (key == i) {
-          this.logos[i].is_selected = !this.logos[i].is_selected;
+    selectLogo(selected_logo) {
+      this.logos.forEach(logo => {
+        if (logo.name == selected_logo.name) {
+          logo.is_selected = !logo.is_selected;
         } else {
-          this.logos[key].is_selected = false;
+          logo.is_selected = false;
         }
       });
-      this.$emit("logoSelected", i, this.logos[i].is_selected);
+      this.$emit("logoSelected", selected_logo);
     }
   }
 };
