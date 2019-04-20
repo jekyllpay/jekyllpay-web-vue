@@ -1,5 +1,12 @@
 ### Jekyll Pay Web App in Vuejs
 
+#### Badges 
+
+
+[![Build Status](https://travis-ci.org/jekyllpay/jekyllpay-web-vue.svg?branch=dev)](https://travis-ci.org/jekyllpay/jekyllpay-web-vue)
+
+
+
 #### Project setup
 ```
 yarn install
