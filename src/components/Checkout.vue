@@ -199,7 +199,6 @@ export default {
           : this.$store.getters["payment/getPayment"];
     },
     async onReview() {
-      console.log(this.payment.pay_method);
       if (!this.payment.pay_method) {
         this.checkout_msg = {
           snackbar: true,

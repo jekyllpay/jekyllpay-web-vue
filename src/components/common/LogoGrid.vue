@@ -29,18 +29,9 @@ export default {
   },
   watch: {
     logo_name: function(val) {
-      console.log(val);
-      if (val) {
-        this.logos.forEach(logo => {
-          if (logo.name == val) {
-            logo.is_selected = true;
-          } else {
-            logo.is_selected = false;
-          }
-        });
-      } else {
-        this.logos.forEach(logo => (logo.is_selected = false));
-      }
+      this.logos.forEach(logo => {
+        logo.is_selected = logo.name == val;
+      });
     }
   },
   data: () => ({
@@ -67,11 +58,8 @@ export default {
     },
     selectLogo(selected_logo) {
       this.logos.forEach(logo => {
-        if (logo.name == selected_logo.name) {
-          logo.is_selected = !logo.is_selected;
-        } else {
-          logo.is_selected = false;
-        }
+        logo.is_selected =
+          logo.name == selected_logo.name ? !logo.is_selected : false;
       });
       this.$emit("logoSelected", selected_logo);
     }
