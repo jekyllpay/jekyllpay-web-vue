@@ -5,6 +5,7 @@ sudo: enabled
 branches:
   only:
     - master
+    - dev
 install:
   - yarn install
 script:
