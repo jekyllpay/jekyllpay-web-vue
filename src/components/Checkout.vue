@@ -20,7 +20,7 @@
                 v-validate="'required|email'"
                 name="email"
                 :error-messages="err_msg.email"
-                @keyup="onKeyUpToResetErrMsg('email')"
+                @keyup="resetErrMsgOnKeyUp('email')"
               ></v-text-field>
             </v-flex>
 
@@ -31,7 +31,7 @@
                 v-validate="'required|decimal:2'"
                 name="amount"
                 :error-messages="err_msg.amount"
-                @keyup="onKeyUpToResetErrMsg('amount')"
+                @keyup="resetErrMsgOnKeyUp('amount')"
               ></v-text-field>
             </v-flex>
             <v-flex xs6 sm3>
@@ -61,7 +61,7 @@
                 v-validate="'required'"
                 name="first name"
                 :error-messages="err_msg['first name']"
-                @keyup="onKeyUpToResetErrMsg('first name')"
+                @keyup="resetErrMsgOnKeyUp('first name')"
               ></v-text-field>
             </v-flex>
             <v-flex xs6 sm3>
@@ -71,7 +71,7 @@
                 v-validate="'required'"
                 name="last name"
                 :error-messages="err_msg['last name']"
-                @keyup="onKeyUpToResetErrMsg('last name')"
+                @keyup="resetErrMsgOnKeyUp('last name')"
               ></v-text-field>
             </v-flex>
             <v-flex xs12 sm6>
@@ -231,14 +231,14 @@ export default {
         ? selected_logo.name
         : null;
     },
-    onKeyUpToResetErrMsg(fieldName) {
+    resetErrMsgOnKeyUp(fieldName) {
       this.err_msg[fieldName] = [];
     },
     resetEverything() {
-      this.resetErrorMessage();
+      this.resetErrorMessages();
       this.resetPayment();
     },
-    resetErrorMessage() {
+    resetErrorMessages() {
       this.err_msg = {
         "first name": [],
         "last name": [],
