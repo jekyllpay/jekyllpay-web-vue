@@ -4,9 +4,9 @@ import axios from 'axios'
 let BASE_URL = process.env.NODE_ENV === "production" ? "" : 'http://localhost:8080';
 
 async function charge(token, payment) {
+    let url = BASE_URL + '/gateway/stripe/charge';
     try {
-        let url = BASE_URL + '/gateway/stripe/charge';
-        let resp = axios({
+        let resp = await axios.request({
             url: url,
             method: "post",
             data: {
@@ -25,12 +25,7 @@ async function charge(token, payment) {
         return resp;
     }
     catch (error) {
-        return {
-            code: '400',
-            status: "failed",
-            message: "Something is wrong",
-            data: error
-        }
+        return error.response;
     }
 
 }

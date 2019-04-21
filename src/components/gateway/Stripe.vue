@@ -63,6 +63,8 @@ export default {
       // this.card = this.elements.create("card", { style: style });
       // // this.card.mount(this.$el.querySelector("#stripe-card"));
       // this.card.mount("#stripe-card");
+
+      this.cardZip = null;
     },
     async submit() {
       let additionalData = {
@@ -75,16 +77,17 @@ export default {
       );
 
       if (error) {
-        console.log(error);
+        this.$emit("submitError", error);
         return;
       }
 
-      charge(token, this.payment).then(result => {
-        if (result.status == 201) {
-          this.initStripe();
-        }
-        return;
-      });
+      let result = await charge(token, this.payment);
+
+      if (result.status == 201) {
+        this.initStripe();
+      } else if (result.status >= 400) {
+        this.$emit("submitError", result);
+      }
     }
   }
 };

@@ -1,6 +1,7 @@
 
 <template>
   <v-container fluid grid-list-md>
+    <alert-message :msg="submit_error_msg"></alert-message>
     <v-layout row wrap>
       <v-flex xs12 sm8 offset-sm2>
         <v-flex xs12 sm12 class="px-0">
@@ -79,7 +80,7 @@
                       ></v-text-field>
                     </v-flex>
                     <v-flex xs12 v-if="methodsForStripe.includes(payment.pay_method)">
-                      <stripe-gateway ref="stripe"></stripe-gateway>
+                      <stripe-gateway ref="stripe" @submitError="handleSubmitError"></stripe-gateway>
                     </v-flex>
                   </v-layout>
                 </v-flex>
@@ -122,6 +123,7 @@
 
 
 <script>
+import AlertMessage from "@/components/common/AlertMessage";
 import { mapGetters, mapActions } from "vuex";
 import { getDiscount } from "@/utils/api";
 import StripeGateway from "@/components/gateway/Stripe";
@@ -129,6 +131,7 @@ import StripeGateway from "@/components/gateway/Stripe";
 export default {
   name: "Review",
   components: {
+    AlertMessage,
     StripeGateway
   },
   mounted() {
@@ -147,6 +150,7 @@ export default {
     }
   },
   data: () => ({
+    submit_error_msg: {},
     discount: 0,
     paymentFields: {
       order_id: "Order Id",
@@ -168,6 +172,15 @@ export default {
     },
     submitPayment: function() {
       this.$refs.stripe.submit();
+    },
+    handleSubmitError(error) {
+      // console.log("175: ", error);
+      this.submit_error_msg = {
+        snackbar: true,
+        icon: "fas fa-exclamation-circle",
+        timeout: 2000,
+        text: error.data
+      };
     }
   }
 };
