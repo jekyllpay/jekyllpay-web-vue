@@ -44,12 +44,13 @@ export default {
         is_selected: false
       },
       { name: "discover", file: "discover.jpg", is_selected: false },
+      { name: "dinersclub", file: "dinersclub.png", is_selected: false },
       { name: "paypal", file: "paypal.jpg", is_selected: false },
-      { name: "bitpay", file: "bitpay.png", is_selected: false },
       { name: "unionpay", file: "unionpay.png", is_selected: false },
       { name: "alipay", file: "alipay.jpg", is_selected: false },
       { name: "wechat", file: "wechat.jpg", is_selected: false },
-      { name: "jcb", file: "jcb.png", is_selected: false }
+      { name: "jcb", file: "jcb.png", is_selected: false },
+      { name: "bitpay", file: "bitpay.png", is_selected: false }
     ]
   }),
   methods: {

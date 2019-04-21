@@ -162,7 +162,13 @@ export default {
       email: "Email",
       phone: "Phone"
     },
-    methodsForStripe: ["visa", "mastercard"],
+    methodsForStripe: [
+      "visa",
+      "mastercard",
+      "americanexpress",
+      "discover",
+      "dinersclub"
+    ],
     step: 0,
     payment_status: "off" // ['off', 'loading', 'success', 'failure']
   }),
