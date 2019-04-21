@@ -77,7 +77,7 @@ export default {
       );
 
       if (error) {
-        this.$emit("submitError", error);
+        this.$emit("chargeError", error);
         return;
       }
 
@@ -86,7 +86,7 @@ export default {
       if (result.status == 201) {
         this.initStripe();
       } else if (result.status >= 400) {
-        this.$emit("submitError", result);
+        this.$emit("chargeError", result);
       }
     }
   }
