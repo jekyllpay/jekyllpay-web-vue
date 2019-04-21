@@ -198,27 +198,33 @@ export default {
           ? Object.assign(this.payment, this.$route.query)
           : this.$store.getters["payment/getPayment"];
     },
-    async onReview() {
-      if (!this.payment.pay_method) {
+    async validatePayment() {
+      let flag1 = this.payment.pay_method;
+      let flag2 = await this.$validator.validate();
+
+      if (!flag1) {
         this.checkout_msg = {
           snackbar: true,
           icon: "fas fa-exclamation-circle",
           timeout: 2000,
           text: "Choose a Payment Method!"
         };
-        return;
       }
 
-      let result = await this.$validator.validate();
-      if (!result) {
+      if (!flag2) {
         // console.log(this.$validator.errors.items);
         this.$validator.errors.items.forEach(item => {
           this.err_msg[item.field] = [item.msg];
         });
-        return;
       }
 
-      this.goToRoute("Review");
+      return !!flag1 && !!flag2;
+    },
+    async onReview() {
+      let isPaymentValid = await this.validatePayment();
+      if (isPaymentValid) {
+        this.goToRoute("Review");
+      }
     },
     goToRoute(routeName) {
       this.$router.push({ name: routeName });

@@ -4,6 +4,7 @@
 
 
 [![Build Status](https://travis-ci.org/jekyllpay/jekyllpay-web-vue.svg?branch=dev)](https://travis-ci.org/jekyllpay/jekyllpay-web-vue)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 
 
