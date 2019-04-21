@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // scheme 'http' or "https" is required in BASE_URL
-let BASE_URL = process.env.NODE_ENV === "production" ? "" : 'http://localhost:8080';
+let BASE_URL = process.env.NODE_ENV === "production" ? process.env.BASE_URL : 'http://localhost:8080';
 
 async function charge(token, payment) {
     let url = BASE_URL + '/gateway/stripe/charge';
