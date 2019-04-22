@@ -13,6 +13,10 @@ script:
 
 notifications:
   slack: 
+    template:
+      - "Build <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) of %{repository_slug}@%{branch}"
+      - "Build Status: *%{result}* "
+      - "Build Duration: *%{duration}* "
     rooms:
       - jekyllpay:ayUfNRYKnjoK3WsJle9Ec0YI
     on_success: always
