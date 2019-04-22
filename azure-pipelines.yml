@@ -4,8 +4,8 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- master
-- dev
+  branches:
+      include: [ "master", "dev" ] # branch names which will trigger a build
 
 pool:
   vmImage: 'Ubuntu-16.04'
