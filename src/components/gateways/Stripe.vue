@@ -89,6 +89,9 @@ export default {
         this.$emit("chargeError", result);
       }
     }
+  },
+  beforeDestroy() {
+    window.Stripe = null; // garbage collection will do the rest
   }
 };
 </script>

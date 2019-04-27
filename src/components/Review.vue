@@ -82,6 +82,9 @@
                     <v-flex xs12 v-if="which_gateway === 'stripe'">
                       <stripe-gateway ref="stripe" @chargeError="handleChargeError"></stripe-gateway>
                     </v-flex>
+                    <v-flex xs12 v-else-if="which_gateway === 'dwolla'">
+                      <dwolla-gateway></dwolla-gateway>
+                    </v-flex>
                   </v-layout>
                 </v-flex>
 
@@ -126,13 +129,13 @@
 import AlertMessage from "@/components/common/AlertMessage";
 import { mapGetters, mapActions } from "vuex";
 import { getDiscount } from "@/utils/api";
-import StripeGateway from "@/components/gateways/Stripe";
 
 export default {
   name: "Review",
   components: {
     AlertMessage,
-    StripeGateway
+    StripeGateway: () => import("@/components/gateways/Stripe"),
+    DwollaGateway: () => import("@/components/gateways/Dwolla")
   },
   mounted() {
     getDiscount(this.payment)
@@ -150,7 +153,10 @@ export default {
     },
     which_gateway: {
       get: function() {
-        return this.methodGatewayMapping[this.payment.pay_method];
+        let defaultMapping = this.methodGatewayMapping;
+        let customMapping = { visa: "dwolla" }; // you can config it.
+        let finalMapping = Object.assign(defaultMapping, customMapping);
+        return finalMapping[this.payment.pay_method];
       }
     }
   },
