@@ -79,7 +79,7 @@
                         hide-details
                       ></v-text-field>
                     </v-flex>
-                    <v-flex xs12 v-if="methodsForStripe.includes(payment.pay_method)">
+                    <v-flex xs12 v-if="which_gateway === 'stripe'">
                       <stripe-gateway ref="stripe" @chargeError="handleChargeError"></stripe-gateway>
                     </v-flex>
                   </v-layout>
@@ -147,6 +147,11 @@ export default {
       get: function() {
         return this.payment.amount - this.discount;
       }
+    },
+    which_gateway: {
+      get: function() {
+        return this.methodGatewayMapping[this.payment.pay_method];
+      }
     }
   },
   data: () => ({
@@ -162,13 +167,16 @@ export default {
       email: "Email",
       phone: "Phone"
     },
-    methodsForStripe: [
-      "visa",
-      "mastercard",
-      "americanexpress",
-      "discover",
-      "dinersclub"
-    ],
+    methodGatewayMapping: {
+      visa: "stripe",
+      mastercard: "stripe",
+      americanexpress: "stripe",
+      discover: "stripe",
+      dinersclub: "stripe",
+      unionpay: "unionpay",
+      alipay: "alipay",
+      wechat: "wechat"
+    },
     step: 0,
     payment_status: "off" // ['off', 'loading', 'success', 'failure']
   }),
