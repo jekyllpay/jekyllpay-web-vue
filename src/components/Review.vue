@@ -126,7 +126,7 @@
 import AlertMessage from "@/components/common/AlertMessage";
 import { mapGetters, mapActions } from "vuex";
 import { getDiscount } from "@/utils/api";
-import StripeGateway from "@/components/gateway/Stripe";
+import StripeGateway from "@/components/gateways/Stripe";
 
 export default {
   name: "Review",

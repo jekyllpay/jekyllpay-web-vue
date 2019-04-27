@@ -18,7 +18,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { charge } from "@/utils/gateway/stripe-api";
+import { charge } from "@/utils/gateway-apis/stripe-api";
 export default {
   name: "StripeGateway",
   mounted() {
