@@ -50,7 +50,8 @@ export default {
       { name: "alipay", file: "alipay.jpg", is_selected: false },
       { name: "wechat", file: "wechat.jpg", is_selected: false },
       { name: "jcb", file: "jcb.png", is_selected: false },
-      { name: "bitpay", file: "bitpay.png", is_selected: false }
+      { name: "bitpay", file: "bitpay.png", is_selected: false },
+      { name: "dwolla", file: "dwolla.png", is_selected: false }
     ]
   }),
   methods: {

@@ -85,9 +85,10 @@
             <v-flex xs12 sm6>
               <v-text-field
                 :value="payment.order_id"
-                label="Order ID, Read Only."
+                label="Order ID"
                 readonly
-                placeholder=" "
+                background-color="grey lighten-3"
+                placeholder="Read Only"
               ></v-text-field>
             </v-flex>
             <v-flex xs12 sm6>

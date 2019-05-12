@@ -154,7 +154,7 @@ export default {
     which_gateway: {
       get: function() {
         let defaultMapping = this.methodGatewayMapping;
-        let customMapping = { visa: "dwolla" }; // you can config it.
+        let customMapping = {}; // you can config it.
         let finalMapping = Object.assign(defaultMapping, customMapping);
         return finalMapping[this.payment.pay_method];
       }
@@ -179,6 +179,8 @@ export default {
       americanexpress: "stripe",
       discover: "stripe",
       dinersclub: "stripe",
+      paypal: "paypal",
+      dwolla: "dwolla",
       unionpay: "unionpay",
       alipay: "alipay",
       wechat: "wechat"
