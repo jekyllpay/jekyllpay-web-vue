@@ -12,9 +12,12 @@ script:
   - yarn build
 
 notifications:
+  email:
+    - guiyumin@yahoo.com
   slack: 
     template:
       - "Build <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) of %{repository_slug}@%{branch}"
+      - "Commit: *%{commit} : %{commit_message}*"
       - "Build Status: *%{result}* "
       - "Build Duration: *%{duration}* "
     rooms:
