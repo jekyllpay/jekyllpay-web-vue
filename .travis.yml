@@ -16,9 +16,10 @@ notifications:
     - guiyumin@yahoo.com
   slack: 
     template:
-      - "Build <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) of %{repository_slug}@%{branch}"
+      - "Build *<%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) of %{repository_slug}@%{branch}*"
       - "Branch: *%{branch}*"
-      - "Commit Message: *%{commit_message}* by *%{author}*"
+      - "Message: *%{commit_message}*"
+      - "Author:  *%{author}*"
       - "Commit: *%{commit}*"
       - "Build Status: *%{result}* "
       - "Build Duration: *%{duration}* "
