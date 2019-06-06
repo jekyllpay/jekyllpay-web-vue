@@ -82,9 +82,6 @@
                     <v-flex xs12 v-if="which_gateway === 'stripe'">
                       <stripe-gateway ref="stripe" @chargeError="handleChargeError"></stripe-gateway>
                     </v-flex>
-                    <v-flex xs12 v-else-if="which_gateway === 'dwolla'">
-                      <dwolla-gateway></dwolla-gateway>
-                    </v-flex>
                   </v-layout>
                 </v-flex>
 
@@ -127,20 +124,18 @@
 
 <script>
 import AlertMessage from "@/components/common/AlertMessage";
-import { mapGetters, mapActions } from "vuex";
-import { getDiscount } from "@/utils/api";
+import { mapGetters } from "vuex";
+import { getDiscount } from "@/utils/apis/common";
 
 export default {
   name: "Review",
   components: {
     AlertMessage,
-    StripeGateway: () => import("@/components/gateways/Stripe"),
-    DwollaGateway: () => import("@/components/gateways/Dwolla")
+    StripeGateway: () => import("@/components/gateways/Stripe")
   },
-  mounted() {
-    getDiscount(this.payment)
-      .then(discount => (this.discount = discount))
-      .catch(err => console.log(err));
+  async mounted() {
+    let discount = await getDiscount(this.payment);
+    this.discount = discount;
   },
   computed: {
     ...mapGetters("payment", {
@@ -180,7 +175,6 @@ export default {
       discover: "stripe",
       dinersclub: "stripe",
       paypal: "paypal",
-      dwolla: "dwolla",
       unionpay: "unionpay",
       alipay: "alipay",
       wechat: "wechat"

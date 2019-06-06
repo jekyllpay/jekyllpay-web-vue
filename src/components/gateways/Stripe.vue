@@ -42,6 +42,7 @@ export default {
     })
   },
   data: () => ({
+    stripePubKey: "pk_test_OJU0YlfU6EdHJoAAfOThO5Oe",
     stripe: null,
     elements: null,
     cardNumber: null,
@@ -52,7 +53,7 @@ export default {
   }),
   methods: {
     initStripe() {
-      this.stripe = window.Stripe("pk_test_l1Wc9afPVQu7MyUUEzqH2Ids");
+      this.stripe = window.Stripe(this.stripePubKey);
       this.elements = this.stripe.elements({ locale: "auto" });
       this.cardNumber = this.elements.create("cardNumber");
       this.cardNumber.mount("#stripe-card-number");
