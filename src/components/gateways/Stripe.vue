@@ -2,13 +2,13 @@
   <v-layout row wrap>
     <!-- <div id="stripe-card" style="width:100%"></div> -->
     <v-flex xs12>
-      <div id="stripe-card-number"></div>
+      <div id="stripe-card-number" class="card-number"></div>
     </v-flex>
     <v-flex xs4>
-      <div id="stripe-card-expiry"></div>
+      <div id="stripe-card-expiry" class="exp-date"></div>
     </v-flex>
     <v-flex xs4>
-      <div id="stripe-card-cvc"></div>
+      <div id="stripe-card-cvc" class="card-cvv"></div>
     </v-flex>
     <v-flex xs4>
       <v-text-field v-model="cardZip" placeholder="Zip Code" hide-details></v-text-field>

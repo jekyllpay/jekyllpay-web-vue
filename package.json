@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "braintree-web": "^3.46.0",
     "cross-env": "^5.2.0",
     "vee-validate": "^2.2.0",
     "vue": "^2.5.17",
