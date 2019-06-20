@@ -82,6 +82,9 @@
                     <v-flex xs12 v-if="which_gateway === 'stripe'">
                       <stripe-gateway ref="stripe" @chargeError="handleChargeError"></stripe-gateway>
                     </v-flex>
+                    <v-flex xs12 v-else-if="which_gateway === 'braintree'">
+                      <braintree-gateway ref-="braintree" @chargeError="handleChargeError"></braintree-gateway>
+                    </v-flex>
                   </v-layout>
                 </v-flex>
 
@@ -131,7 +134,8 @@ export default {
   name: "Review",
   components: {
     AlertMessage,
-    StripeGateway: () => import("@/components/gateways/Stripe")
+    StripeGateway: () => import("@/components/gateways/Stripe"),
+    BraintreeGateway: () => import("@/components/gateways/Braintree")
   },
   async mounted() {
     let discount = await getDiscount(this.payment);
@@ -149,7 +153,7 @@ export default {
     which_gateway: {
       get: function() {
         let defaultMapping = this.methodGatewayMapping;
-        let customMapping = {}; // you can config it.
+        let customMapping = { visa: 'braintree'}; // you can config it.
         let finalMapping = Object.assign(defaultMapping, customMapping);
         return finalMapping[this.payment.pay_method];
       }

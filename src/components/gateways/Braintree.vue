@@ -21,7 +21,7 @@ import {client, hostedFields} from 'braintree-web';
 export default {
     name:"Braintree",
     async mounted(){
-        this.client_token = await getClientToken();
+        this.client_token = await this.getClientToken();
         let clientInstance = await client.create({ authorization: this.client_token});
         hostedFields.create();
     },
@@ -30,7 +30,7 @@ export default {
     }),
     methods:{
         async getClientToken(){
-
+            
         }
     }
 }
