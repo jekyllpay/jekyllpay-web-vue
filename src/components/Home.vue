@@ -16,12 +16,12 @@
 
 <script>
 export default {
-  name: "Home"
+    name: "Home",
 };
 </script>
 
 <style>
 .home-page-btn {
-  pointer-events: none;
+    pointer-events: none;
 }
 </style>
